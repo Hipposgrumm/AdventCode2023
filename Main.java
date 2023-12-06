@@ -1,15 +1,9 @@
-import days.Day1;
-import days.Day2;
-import days.Day3;
+import days.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 
 /**
  * Everything here is written with Java 17.
@@ -39,6 +33,7 @@ public class Main {
             case "1" -> new Day1().run(input,hard);
             case "2" -> new Day2().run(input,hard);
             case "3" -> new Day3().run(input,hard);
+            case "4" -> new Day4().run(input,hard);
             default -> throw new ArrayIndexOutOfBoundsException("Nothing exists for that day.");
         });
     }
