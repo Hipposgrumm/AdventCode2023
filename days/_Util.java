@@ -5,5 +5,5 @@ package days;
  * @author Hipposgrumm
  */
 public interface _Util {
-    record CoordinatePair(int x, int y) {}
+    record Pair<F,S>(F first,S second) {}
 }

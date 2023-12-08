@@ -66,13 +66,13 @@ public class Day3 extends AbstractDay {
 
     private static class SurroundedNumber {
         private final int number;
-        private final _Util.CoordinatePair pos; // Position of the leftmost number.
+        private final _Util.Pair<Integer,Integer> pos; // Position of the leftmost number.
         private final int size;
 
         public SurroundedNumber(int num, int x, int y) {
             this.number = num;
             this.size = Integer.toString(num).length();
-            this.pos = new _Util.CoordinatePair(x,y);
+            this.pos = new _Util.Pair<>(x,y);
         }
 
         public int get() {
@@ -80,9 +80,11 @@ public class Day3 extends AbstractDay {
         }
 
         public boolean inRange(int x, int y) {
-            if (y==pos.y()-1 && x>=pos.x()-1 && x<=pos.x()+size) return true;
-            if (y==pos.y()+1 && x>=pos.x()-1 && x<=pos.x()+size) return true;
-            return y == pos.y() && (x == pos.x() - 1 || x == pos.x() + size);
+            // First  = x
+            // Second = y
+            if (y==pos.second()-1 && x>=pos.first()-1 && x<=pos.first()+size) return true;
+            if (y==pos.first()+1 && x>=pos.first()-1 && x<=pos.first()+size) return true;
+            return y == pos.second() && (x == pos.first() - 1 || x == pos.first() + size);
         }
     }
 }
