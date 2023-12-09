@@ -19,67 +19,70 @@ public class Day5 extends AbstractDay {
     private final BiFunction<Long,Long,Long> THE_GAUNTLET = (start, len) -> {
         long min = Long.MAX_VALUE;
         for (long s=start;s<start+len;s++) {
-            // TODO: Actually test part 2 to see if it works. It seems to be taking a really long time.
-            if (s%20000000==0) System.out.println("Checkpoint: "+s);
+            // TODO: Actually test part 2 to see if it works. It will take about an hour and a half.
+            System.out.print("\rPoint: "+s); // If you're using eclipse, this line breaks.
             long newS = s;
             for (GinormousIterationHelper ih : seed2soil) {
-                GinormousIterationHelper result = ih.evaluate(newS);
-                if (result.doesOverlap()) {
-                    newS = result.newValue();
+                _Util.Pair<Boolean,Long> result = ih.evaluate(newS);
+                if (result.first()) {
+                    newS = result.second();
                     break;
                 }
             }
             if (s==-1) continue;
             for (GinormousIterationHelper ih : soil2fertilizer) {
-                GinormousIterationHelper result = ih.evaluate(newS);
-                if (result.doesOverlap()) {
-                    newS = result.newValue();
+                _Util.Pair<Boolean,Long> result = ih.evaluate(newS);
+                if (result.first()) {
+                    newS = result.second();
                     break;
                 }
             }
             if (newS==-1) continue;
             for (GinormousIterationHelper ih : fertilizer2water) {
-                GinormousIterationHelper result = ih.evaluate(newS);
-                if (result.doesOverlap()) {
-                    newS = result.newValue();
+                _Util.Pair<Boolean,Long> result = ih.evaluate(newS);
+                if (result.first()) {
+                    newS = result.second();
                     break;
                 }
             }
             if (newS==-1) continue;
             for (GinormousIterationHelper ih : water2light) {
-                GinormousIterationHelper result = ih.evaluate(newS);
-                if (result.doesOverlap()) {
-                    newS = result.newValue();
+                _Util.Pair<Boolean,Long> result = ih.evaluate(newS);
+                if (result.first()) {
+                    newS = result.second();
                     break;
                 }
             }
             if (newS==-1) continue;
             for (GinormousIterationHelper ih : light2temperature) {
-                GinormousIterationHelper result = ih.evaluate(newS);
-                if (result.doesOverlap()) {
-                    newS = result.newValue();
+                _Util.Pair<Boolean,Long> result = ih.evaluate(newS);
+                if (result.first()) {
+                    newS = result.second();
                     break;
                 }
             }
             if (newS==-1) continue;
             for (GinormousIterationHelper ih : temperature2humidity) {
-                GinormousIterationHelper result = ih.evaluate(newS);
-                if (result.doesOverlap()) {
-                    newS = result.newValue();
+                _Util.Pair<Boolean,Long> result = ih.evaluate(newS);
+                if (result.first()) {
+                    newS = result.second();
                     break;
                 }
             }
             if (newS==-1) continue;
             for (GinormousIterationHelper ih : humidity2location) {
-                GinormousIterationHelper result = ih.evaluate(newS);
-                if (result.doesOverlap()) {
-                    newS = result.newValue();
+                _Util.Pair<Boolean,Long> result = ih.evaluate(newS);
+                if (result.first()) {
+                    newS = result.second();
                     break;
                 }
             }
             if (newS==-1) continue;
             if (newS<min) min = newS;
+
         }
+        System.out.println();
+        System.out.println();
         return min;
     };
 
@@ -136,48 +139,19 @@ public class Day5 extends AbstractDay {
         private final long offsetLength;       // Range Length
         private final long offsetStartReplace; // Source Range Start
 
-        private Boolean doesOverlap = null;
-        private Long newValue = null;
-
         public GinormousIterationHelper(long offStart, long offLength, long offReplaceStart) {
             this.offsetStartValue = offStart;
             this.offsetLength = offLength;
             this.offsetStartReplace = offReplaceStart;
         }
 
-        public GinormousIterationHelper evaluate(long value) {
+        public _Util.Pair<Boolean,Long> evaluate(long value) {
+            boolean doesOverlap = false;
             if (value>=offsetStartReplace && value<(offsetStartReplace+offsetLength)) {
-                this.doesOverlap = true;
-                long modified = offsetStartValue;
-                long linear = offsetStartReplace;
-                for (long i = offsetStartReplace;i<offsetStartReplace+offsetLength;i++) {
-                    if (value==linear) {
-                        this.newValue = modified;
-                        break;
-                    }
-                    modified++;
-                    linear++;
-                }
-            } else {
-                this.doesOverlap = false;
-                this.newValue = value;
+                doesOverlap = true;
+                value+=offsetStartReplace-offsetStartValue;
             }
-            return this;
-        }
-
-        public boolean doesOverlap() {
-            if (doesOverlap==null) return false;
-            return doesOverlap;
-        }
-
-        public long newValue() {
-            if (newValue==null) return -1;
-            return newValue;
-        }
-
-        @Override
-        public String toString() {
-            return "(OffStart="+offsetStartValue+",OffLocation="+offsetStartReplace+",OffLen="+offsetLength+")";
+            return new _Util.Pair<>(doesOverlap,value);
         }
     }
 }
